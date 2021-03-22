@@ -1,16 +1,33 @@
+import React from "react";
+import { Button } from "@chakra-ui/button";
 import { Box, Center, Grid, GridItem } from "@chakra-ui/layout";
 import { useState } from "react";
-
+import TimeElement from "./timeElement";
+import {
+  AlertDialog,
+  AlertDialogBody,
+  AlertDialogCloseButton,
+  AlertDialogContent,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogOverlay,
+} from "@chakra-ui/modal";
+import { useDisclosure } from "@chakra-ui/hooks";
 function Calandre(props) {
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const cancelRef = React.useRef();
+  const [currentDateStart, setCurrentDateStart] = useState("");
+  const [start, setstartt] = useState("");
+  const [end, setend] = useState("");
   const { rowNumber } = props;
   const Hours = [
-    "00:00",
-    "01:00",
-    "02:00",
-    "03:00",
-    "04:00",
-    "05:00",
-    "06:00",
+    // "00:00",
+    // "01:00",
+    // "02:00",
+    // "03:00",
+    // "04:00",
+    // "05:00",
+    // "06:00",
     "07:00",
     "08:00",
     "09:00",
@@ -23,18 +40,33 @@ function Calandre(props) {
     "16:00",
     "17:00",
     "18:00",
-    "19:00",
-    "20:00",
-    "21:00",
-    "22:00",
-    "23:00",
+    // "19:00",
+    // "20:00",
+    // "21:00",
+    // "22:00",
+    // "23:00",
   ];
-
+  const addtaks = (start, end) => {
+    id = id + 1;
+    setstartt(start);
+    setend(end);
+    setCurrentDateStart(start);
+    onOpen();
+  };
+  const restOfConfirmation = (start, end) => {
+    setTask((task) => [...task, { id, start, end }]);
+    onClose();
+  };
   //to get format yyy-mm-ddThh:mm:ss
   // .toISOString().slice(0, 19)
 
-  const [date, setDate] = useState(new Date());
+  const [date] = useState(new Date());
+  const [task, setTask] = useState([{ start: "2021-03-22T00:00" }]);
+  let id = 0;
 
+  const addToDOM = () => {
+    // task.forEach((element) => console.log(element));
+  };
   const addDays = (date, days) => {
     var result = new Date(date);
     result.setDate(result.getDate() + days);
@@ -65,87 +97,75 @@ function Calandre(props) {
           {value.toISOString().slice(0, 10)}
         </Center>
         {Hours.map((HoursValue) => (
-          <Box h="160px" key={HoursValue} fontSize="20px">
-            <Grid h="100%" templateRows="repeat(4, 1fr)" gap={0}>
-              <GridItem
-                border="1px"
-                id={
-                  value.toISOString().slice(0, 10) +
-                  "T" +
-                  HoursValue.slice(0, 3) +
-                  "00"
-                }
-                bgColor="gray.50"
-                borderColor="gray.200"
-              ></GridItem>
-              <GridItem
-                border="1px"
-                id={
-                  value.toISOString().slice(0, 10) +
-                  "T" +
-                  HoursValue.slice(0, 3) +
-                  "15"
-                }
-                bgColor="gray.50"
-                borderColor="gray.200"
-              ></GridItem>
-              <GridItem
-                border="1px"
-                id={
-                  value.toISOString().slice(0, 10) +
-                  "T" +
-                  HoursValue.slice(0, 3) +
-                  "30"
-                }
-                bgColor="gray.50"
-                borderColor="gray.200"
-              ></GridItem>
-              <GridItem
-                border="1px"
-                id={
-                  value.toISOString().slice(0, 10) +
-                  "T" +
-                  HoursValue.slice(0, 3) +
-                  "45"
-                }
-                bgColor="gray.50"
-                borderColor="gray.200"
-              ></GridItem>
-            </Grid>
-          </Box>
+          <TimeElement
+            key={HoursValue}
+            HoursValue={HoursValue}
+            value={value}
+            addtaks={addtaks}
+            task={task}
+          />
         ))}
       </Box>
     );
   }
   return (
-    <Grid templateColumns="repeat(6, 1fr)" gap={0}>
-      <GridItem colSpan={1}>
-        <Box w="100%" bgColor="gray.400">
-          <Center h={10} align="center"></Center>
-          {Hours.map((value) => (
-            <Center
-              border="1px"
-              borderColor="gray.200"
-              bgColor="gray.400"
-              h="160px"
-              key={value}
-              fontSize="20px"
-            >
-              {value}
-            </Center>
-          ))}
-        </Box>
-      </GridItem>
-      <GridItem colSpan={5} w="100%">
-        <Grid
-          w="100%"
-          templateColumns={"repeat(" + parseInt(rowNumber) + ", 1fr)"}
-          gap={0}
-        >
-          {contenu}
-        </Grid>
-      </GridItem>
-    </Grid>
+    <Box>
+      <Grid templateColumns="repeat(6, 1fr)" gap={0}>
+        <GridItem colSpan={1}>
+          <Box w="100%" bgColor="gray.300">
+            <Center h={10} align="center"></Center>
+            {Hours.map((value) => (
+              <Center
+                border="1px"
+                borderColor="gray.400"
+                bgColor="gray.300"
+                h="160px"
+                key={value}
+                fontSize="20px"
+              >
+                {value}
+              </Center>
+            ))}
+          </Box>
+        </GridItem>
+        <GridItem colSpan={5} w="100%">
+          <Grid
+            w="100%"
+            templateColumns={"repeat(" + parseInt(rowNumber) + ", 1fr)"}
+            gap={0}
+          >
+            {contenu}
+          </Grid>
+        </GridItem>
+      </Grid>
+      <AlertDialog
+        motionPreset="slideInBottom"
+        leastDestructiveRef={cancelRef}
+        onClose={onClose}
+        isOpen={isOpen}
+        isCentered
+      >
+        <AlertDialogOverlay />
+
+        <AlertDialogContent>
+          <AlertDialogHeader>Confirmer la réservation</AlertDialogHeader>
+          <AlertDialogCloseButton />
+          <AlertDialogBody>
+            Réservation un rendez-vous a {currentDateStart.slice(0, 10) + " "}
+            en
+            {" " + currentDateStart.slice(11, 19)}
+          </AlertDialogBody>
+          <AlertDialogFooter>
+            <Button ref={cancelRef} colorScheme="red" onClick={onClose}>
+              Non
+            </Button>
+            <Button onClick={() => restOfConfirmation(start, end)} ml={3}>
+              Oui
+            </Button>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+    </Box>
   );
 }
 
