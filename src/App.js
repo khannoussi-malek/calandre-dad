@@ -3,7 +3,7 @@ import { ChakraProvider } from "@chakra-ui/react";
 function App() {
   return (
     <ChakraProvider>
-      <Calandre rowNumber="1" />
+      <Calandre rowNumber="3" />
     </ChakraProvider>
   );
 }
