@@ -85,7 +85,7 @@ const TimeElement = (props) => {
                 "T" +
                 HoursValue.slice(0, 3) +
                 "15" ? (
-                <Task />
+                <Task task={task} setTask={setTask} taskvalue={taskvalue} />
               ) : (
                 ``
               )
@@ -123,7 +123,7 @@ const TimeElement = (props) => {
                 "T" +
                 HoursValue.slice(0, 3) +
                 "30" ? (
-                <Task />
+                <Task task={task} setTask={setTask} taskvalue={taskvalue} />
               ) : (
                 ``
               )
@@ -161,7 +161,7 @@ const TimeElement = (props) => {
                 "T" +
                 HoursValue.slice(0, 3) +
                 "45" ? (
-                <Task start={taskvalue.start} />
+                <Task task={task} setTask={setTask} taskvalue={taskvalue} />
               ) : (
                 ``
               )
