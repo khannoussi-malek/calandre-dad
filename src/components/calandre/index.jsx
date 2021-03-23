@@ -103,6 +103,7 @@ function Calandre(props) {
             value={value}
             addtaks={addtaks}
             task={task}
+            setTask={setTask}
           />
         ))}
       </Box>
@@ -156,7 +157,7 @@ function Calandre(props) {
             {" " + currentDateStart.slice(11, 19)}
           </AlertDialogBody>
           <AlertDialogFooter>
-            <Button ref={cancelRef} colorScheme="red" onClick={onClose}>
+            <Button ref={cancelRef} onClick={onClose}>
               Non
             </Button>
             <Button onClick={() => restOfConfirmation(start, end)} ml={3}>

@@ -4,7 +4,7 @@ import { GridItem } from "@chakra-ui/layout";
 import Task from "./../taks";
 
 const TimeElement = (props) => {
-  const { HoursValue, value, addtaks, task } = props;
+  const { HoursValue, value, addtaks, task, setTask } = props;
   return (
     <Box h="160px" fontSize="20px" border="1px">
       <Grid
@@ -47,7 +47,7 @@ const TimeElement = (props) => {
                 "T" +
                 HoursValue.slice(0, 3) +
                 "00" ? (
-                <Task />
+                <Task task={task} setTask={setTask} taskvalue={taskvalue} />
               ) : (
                 ``
               )
@@ -161,7 +161,7 @@ const TimeElement = (props) => {
                 "T" +
                 HoursValue.slice(0, 3) +
                 "45" ? (
-                <Task />
+                <Task start={taskvalue.start} />
               ) : (
                 ``
               )
