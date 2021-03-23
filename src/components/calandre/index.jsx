@@ -48,8 +48,7 @@ function Calandre(props) {
     // "23:00",
   ];
   const addtaks = (event, start, end) => {
-    // event.stopPropagation();
-
+    event.stopPropagation();
     setstartt(start);
     setend(end);
     setId(id + 1);
@@ -57,7 +56,10 @@ function Calandre(props) {
     onOpen();
   };
   const restOfConfirmation = (start, end) => {
-    setTask((task) => [...task, { id, start, end }]);
+    setTask((task) => [
+      ...task,
+      { id, start, end, nom: "khannoussi", prenom: "malek" },
+    ]);
     onClose();
   };
   //to get format yyy-mm-ddThh:mm:ss
@@ -120,7 +122,7 @@ function Calandre(props) {
   }
   return (
     <Box>
-      <Grid templateColumns="repeat(6, 1fr)" gap={0}>
+      <Grid templateColumns="repeat(10, 1fr)" gap={0}>
         <GridItem colSpan={1}>
           <Box w="100%" bgColor="gray.300">
             <Center h={10} align="center"></Center>
@@ -138,7 +140,7 @@ function Calandre(props) {
             ))}
           </Box>
         </GridItem>
-        <GridItem colSpan={5} w="100%">
+        <GridItem colSpan={9} w="100%">
           <Grid
             w="100%"
             templateColumns={"repeat(" + parseInt(rowNumber) + ", 1fr)"}
