@@ -13,6 +13,7 @@ import {
   AlertDialogOverlay,
 } from "@chakra-ui/modal";
 import { useDisclosure } from "@chakra-ui/hooks";
+import { DragDropContext } from "react-beautiful-dnd";
 function Calandre(props) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const cancelRef = React.useRef();
@@ -46,10 +47,12 @@ function Calandre(props) {
     // "22:00",
     // "23:00",
   ];
-  const addtaks = (start, end) => {
-    id = id + 1;
+  const addtaks = (event, start, end) => {
+    // event.stopPropagation();
+
     setstartt(start);
     setend(end);
+    setId(id + 1);
     setCurrentDateStart(start);
     onOpen();
   };
@@ -62,8 +65,15 @@ function Calandre(props) {
 
   const [date] = useState(new Date());
   const [task, setTask] = useState([{ start: "2021-03-22T00:00" }]);
-  let id = 0;
+  const [id, setId] = useState(0);
 
+  const moveTask = (element) => {
+    let toThis = element.destination.droppableId;
+    let taksid = element.draggableId;
+    let index = task.indexOf(task.find((element) => element.id == taksid));
+    task[index].start = toThis;
+    setTask([...task]);
+  };
   const addToDOM = () => {
     // task.forEach((element) => console.log(element));
   };
@@ -98,7 +108,6 @@ function Calandre(props) {
         </Center>
         {Hours.map((HoursValue) => (
           <TimeElement
-            key={HoursValue}
             HoursValue={HoursValue}
             value={value}
             addtaks={addtaks}
@@ -135,7 +144,9 @@ function Calandre(props) {
             templateColumns={"repeat(" + parseInt(rowNumber) + ", 1fr)"}
             gap={0}
           >
-            {contenu}
+            <DragDropContext onDragEnd={(result) => moveTask(result)}>
+              {contenu}
+            </DragDropContext>
           </Grid>
         </GridItem>
       </Grid>

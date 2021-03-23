@@ -1,6 +1,7 @@
 import { Box, Flex, Text } from "@chakra-ui/layout";
 import { Grid } from "@chakra-ui/layout";
 import { GridItem } from "@chakra-ui/layout";
+import { Droppable } from "react-beautiful-dnd";
 import Task from "./../taks";
 
 const TimeElement = (props) => {
@@ -14,47 +15,67 @@ const TimeElement = (props) => {
         borderColor="red.200"
         gap={0}
       >
-        <GridItem
-          bgColor="gray.50"
-          maxH="40px"
-          onClick={() =>
-            addtaks(
-              value.toISOString().slice(0, 10) +
-                "T" +
-                HoursValue.slice(0, 3) +
-                "00",
-              value.toISOString().slice(0, 10) +
-                "T" +
-                HoursValue.slice(0, 3) +
-                "00"
-            )
-          }
-          borderBottom="1px"
-          id={
+        <Droppable
+          droppableId={
             value.toISOString().slice(0, 10) +
             "T" +
             HoursValue.slice(0, 3) +
             "00"
           }
-          //   bgColor="gray.50"
-          borderColor="gray.200"
         >
-          <Flex>
-            <Text fontSize="xs">{HoursValue.slice(0, 3) + "00"}</Text>
-            {task.map((taskvalue) =>
-              taskvalue.start ===
-              value.toISOString().slice(0, 10) +
+          {(provided, snapshot) => (
+            <GridItem
+              {...provided.droppableProps}
+              ref={provided.innerRef}
+              bgColor={snapshot.isDraggingOver ? "gray.50" : `gray.200`}
+              maxH="40px"
+              onClick={(event) =>
+                addtaks(
+                  event,
+                  value.toISOString().slice(0, 10) +
+                    "T" +
+                    HoursValue.slice(0, 3) +
+                    "00",
+                  value.toISOString().slice(0, 10) +
+                    "T" +
+                    HoursValue.slice(0, 3) +
+                    "00"
+                )
+              }
+              borderBottom="1px"
+              id={
+                value.toISOString().slice(0, 10) +
                 "T" +
                 HoursValue.slice(0, 3) +
-                "00" ? (
-                <Task task={task} setTask={setTask} taskvalue={taskvalue} />
-              ) : (
-                ``
-              )
-            )}
-          </Flex>
-        </GridItem>
-        <GridItem
+                "00"
+              }
+              //   bgColor="gray.50"
+              borderColor="gray.200"
+            >
+              <Flex>
+                <Text fontSize="xs">{HoursValue.slice(0, 3) + "00"}</Text>
+                {task.map((taskvalue) =>
+                  taskvalue.start ===
+                  value.toISOString().slice(0, 10) +
+                    "T" +
+                    HoursValue.slice(0, 3) +
+                    "00" ? (
+                    <Task
+                      key={taskvalue.id}
+                      task={task}
+                      setTask={setTask}
+                      taskvalue={taskvalue}
+                    />
+                  ) : (
+                    ``
+                  )
+                )}
+                {provided.placeholder}
+              </Flex>
+            </GridItem>
+          )}
+        </Droppable>
+        {/* <GridItem
           onClick={() =>
             addtaks(
               value.toISOString().slice(0, 10) +
@@ -167,7 +188,7 @@ const TimeElement = (props) => {
               )
             )}
           </Flex>
-        </GridItem>
+        </GridItem> */}
       </Grid>
     </Box>
   );
